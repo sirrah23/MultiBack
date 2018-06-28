@@ -1,6 +1,7 @@
 import os
 import datetime
 import pathlib
+import shutil
 
 """
 Given a list of directory names, make sure that each input
@@ -93,11 +94,25 @@ def fname_timestamp(fname, tstamp):
     print(p.suffixes)
     return "{}.{}{}".format(p.stem, tstamp, "".join(p.suffixes))
 
-def rename_file(old_fname, new_fname):
-    pass
+"""
+Rename a given file.
 
-def copy_file(src, dest):
-    pass
+Args:
+    old_fname: Old filename
+    new_fname: New filename
+"""
+def rename_file(old_fname, new_fname):
+    os.rename(old_fname, new_fname)
+
+"""
+Copy a file to a given destination
+
+Args:
+    src_file: Source file
+    dest_dir: Destination directory
+"""
+def copy_file(src_file, dest_dir):
+    shutil.copy(src_file, dest_dir)
 
 if __name__ == "__main__":
     print(timestamp_str())
