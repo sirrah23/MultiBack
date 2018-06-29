@@ -69,7 +69,7 @@ def backup_file(src, dests):
     src_fname = path_filename(src)
     for dest in dests:
         curr_file = os.path.join(dest, src_fname)
-        if is_file(curr_file):
+        if is_file([curr_file])[1][0]:
             rename_file(curr_file, os.path.join(dest, fname_timestamp(src_fname, ts)))
         copy_file(src, dest)
 
