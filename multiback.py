@@ -74,7 +74,17 @@ def backup_file(src, dests):
         copy_file(src, dest)
 
 def backup_files(srcs, dests):
-    pass
+    """
+    Write each given file to a pool of destination directories. If the
+    filename being written to the destination already exists there it is
+    renamed with a timestamp before any file-writes take place.
+
+    Args:
+        srcs: List of src files
+        dests: List of destination directories
+    """
+    for src in srcs:
+        backup_file(src, dests)
 
 def timestamp_str():
     """
