@@ -12,13 +12,28 @@ def setup_module():
     os.mkdir("./test/backup/src")
     os.mkdir("./test/backup/dest_empty")
     os.mkdir("./test/backup/dest_populated")
+    os.mkdir("./test/backups")
+    os.mkdir("./test/backups/src")
+    os.mkdir("./test/backups/dest_empty")
+    os.mkdir("./test/backups/dest_populated")
+
     create_file_with_content("./test/exist/exist1.txt", "Hello World1")
     create_file_with_content("./test/exist/exist2.txt", "Hello World2")
+
     create_file_with_content("./test/rename/r1.txt", "Hello World")
+
     create_file_with_content("./test/copy/c1.txt", "Hello World")
     create_file_with_content("./test/copy/c1.txt", "Hello World")
+
     create_file_with_content("./test/backup/src/test.txt", "Hello World")
     create_file_with_content("./test/backup/dest_populated/test.txt", "Hello World")
+
+    create_file_with_content("./test/backups/src/test.txt", "Hello World")
+    create_file_with_content("./test/backups/src/test2.txt", "Hello World")
+    create_file_with_content("./test/backups/src/test3.txt", "Hello World")
+    create_file_with_content("./test/backups/dest_populated/test.txt", "Hello World")
+    create_file_with_content("./test/backups/dest_populated/test2.txt", "Hello World")
+    create_file_with_content("./test/backups/dest_populated/test3.txt", "Hello World")
 
 def create_file_with_content(fname, content):
     with open(fname, "w+") as f:
@@ -76,4 +91,37 @@ def test_backup_file_rename():
     assert files[1].startswith("test") == True
     assert files[0].endswith(".txt") == True
     assert files[0] != files[1]
-    
+
+def test_backup_files_no_rename():
+    srcs = [
+        os.path.abspath("./test/backups/src/test.txt"),
+        os.path.abspath("./test/backups/src/test2.txt"),
+        os.path.abspath("./test/backups/src/test3.txt")
+    ]
+    dest = [os.path.abspath("./test/backups/dest_empty")]
+    backup_files(srcs, dest)
+    files = os.listdir(dest[0])
+    assert len(files) == 3
+    assert "test.txt" in files
+    assert "test2.txt" in files
+    assert "test3.txt" in files
+
+def test_backup_files_rename():
+    srcs = [
+        os.path.abspath("./test/backups/src/test.txt"),
+        os.path.abspath("./test/backups/src/test2.txt"),
+        os.path.abspath("./test/backups/src/test3.txt")
+    ]
+    dest = [os.path.abspath("./test/backups/dest_populated")]
+    backup_files(srcs, dest)
+    files = os.listdir(dest[0])
+    assert len(files) == 6
+    counts = [0, 0, 0]
+    for file in files:
+        if file.startswith("test2"):
+            counts[1] += 1
+        elif file.startswith("test3"):
+            counts[2] += 1
+        elif file.startswith("test"):
+            counts[0] += 1
+    assert counts == [2, 2, 2]
