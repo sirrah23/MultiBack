@@ -56,7 +56,22 @@ def read_config(cfg):
     pass
 
 def backup_file(src, dests):
-    pass
+    """
+    Write a given file to each one or more destination directories. If the
+    filename already exists at the destination then rename it with a
+    timestamp before writing the given file over.
+
+    Args:
+        src: Source File
+        dests: List of destination directories
+    """
+    ts = timestamp_str()
+    src_fname = path_filename(src)
+    for dest in dests:
+        curr_file = os.path.join(dest, src_fname)
+        if is_file(curr_file):
+            rename_file(curr_file, os.path.join(dest, fname_timestamp(src_fname, ts)))
+        copy_file(src, dest)
 
 def backup_files(srcs, dests):
     pass
@@ -91,8 +106,6 @@ def fname_timestamp(fname, tstamp):
         print(y)  # test.20180626.034516.tar.gz
     """
     p = pathlib.Path(fname)
-    print(p.stem)
-    print(p.suffixes)
     return "{}.{}{}".format(p.stem, tstamp, "".join(p.suffixes))
 
 def rename_file(old_fname, new_fname):
@@ -115,6 +128,18 @@ def copy_file(src_file, dest_dir):
     """
     shutil.copy(src_file, dest_dir)
 
+def path_filename(fpath):
+    """
+    Return the filename associated with a filepath.
+
+    Args:
+        fpath: File path
+    
+    Returns:
+        Filename
+    """
+    return pathlib.Path(fpath).name
+
+
 if __name__ == "__main__":
-    print(timestamp_str())
-    print(fname_timestamp("test.txt", "20180626.034516"))
+    pass
