@@ -2,6 +2,7 @@ import os
 import datetime
 import pathlib
 import shutil
+import json
 
 
 def is_dir(dirs):
@@ -52,7 +53,28 @@ def is_file(files):
             any_missing = True
     return (any_missing, is_file)
 
+def template_config(fname):
+    """
+    Generate a template config.json file which contains source/destination
+    mappings.
+    """
+    templ = {}
+    templ["sources"] = [
+            "/home/anon/test1.txt",
+            "/home/anon/test2.txt",
+    ]
+    templ["destinations"] = [
+            "/home/anon/backup/",
+            "home/anon/backup2/",
+    ]
+    with open(fname, 'w') as outfile:
+        json.dump(templ, outfile)
+
 def read_config(cfg):
+    """
+    Read a configuration file which is assumed to contain source/destination
+    mappings.
+    """
     pass
 
 def backup_file(src, dests):
@@ -153,3 +175,4 @@ def path_filename(fpath):
 
 if __name__ == "__main__":
     pass
+    

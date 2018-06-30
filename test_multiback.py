@@ -3,6 +3,10 @@ import shutil
 from multiback import *
 
 
+# TODO: Re-organize this into a class-based test-suite for better
+# maintainability...
+
+
 def setup_module():
     os.mkdir("./test")
     os.mkdir("./test/exist")
@@ -16,6 +20,7 @@ def setup_module():
     os.mkdir("./test/backups/src")
     os.mkdir("./test/backups/dest_empty")
     os.mkdir("./test/backups/dest_populated")
+    os.mkdir("./test/template")
 
     create_file_with_content("./test/exist/exist1.txt", "Hello World1")
     create_file_with_content("./test/exist/exist2.txt", "Hello World2")
@@ -125,3 +130,13 @@ def test_backup_files_rename():
         elif file.startswith("test"):
             counts[0] += 1
     assert counts == [2, 2, 2]
+
+def test_template_config():
+    loc = os.path.abspath("./test/template/")
+    loc = os.path.join(loc, fname_timestamp("config.json", timestamp_str()))
+    template_config(loc)
+    files = os.listdir("./test/template")
+    assert len(files) == 1
+    assert files[0].startswith("config") == True
+    assert files[0].endswith(".json") == True
+
