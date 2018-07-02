@@ -57,6 +57,9 @@ def template_config(fname):
     """
     Generate a template config.json file which contains source/destination
     mappings.
+
+    Args:
+        fname: Name of file to write template config data to
     """
     templ = {}
     templ["sources"] = [
@@ -65,17 +68,35 @@ def template_config(fname):
     ]
     templ["destinations"] = [
             "/home/anon/backup/",
-            "home/anon/backup2/",
+            "/home/anon/backup2/",
     ]
-    with open(fname, 'w') as outfile:
+    with open(os.path.abspath(fname), 'w') as outfile:
         json.dump(templ, outfile)
 
-def read_config(cfg):
+def read_config(cfg_file):
     """
     Read a configuration file which is assumed to contain source/destination
     mappings.
+
+    Args:
+        cfg_file: Name of configuration file
+
+    Returns:
+        valid: Configuration data is valid -> True, else False
+        cfg_data: Dictionary with source/destination information
     """
-    pass
+    valid = False
+    cfg_data = {}
+    if not is_file(cfg_file):
+        return (valid, cfg_data)
+    with open(cfg_file, "r") as f:
+        cfg_data = json.load(f)
+    try:
+        valid = len(cfg_data["sources"]) > 0 and len(cfg_data["destinations"]) > 0
+    except KeyError:
+        valid = False
+    return (valid, cfg_data)
+    
 
 def backup_file(src, dests):
     """
@@ -166,7 +187,7 @@ def path_filename(fpath):
 
     Args:
         fpath: File path
-    
+
     Returns:
         Filename
     """
@@ -175,4 +196,4 @@ def path_filename(fpath):
 
 if __name__ == "__main__":
     pass
-    
+

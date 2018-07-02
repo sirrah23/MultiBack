@@ -140,3 +140,13 @@ def test_template_config():
     assert files[0].startswith("config") == True
     assert files[0].endswith(".json") == True
 
+def test_config_read():
+    loc = os.path.abspath("./test/template/")
+    loc = os.path.join(loc, fname_timestamp("config.json", timestamp_str()))
+    template_config(loc)
+    valid, cfg = read_config(loc)
+    assert valid == True
+    assert "/home/anon/test1.txt" in cfg["sources"]
+    assert "/home/anon/test2.txt" in cfg["sources"]
+    assert "/home/anon/backup/" in cfg["destinations"]
+    assert "/home/anon/backup2/" in cfg["destinations"]
