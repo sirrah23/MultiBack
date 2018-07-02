@@ -3,8 +3,11 @@ import datetime
 import pathlib
 import shutil
 import json
+import click
 
 
+# Backup Code
+# ===========
 def is_dir(dir):
     """
     Given an input directory name, make sure the directory exists.
@@ -191,7 +194,33 @@ def path_filename(fpath):
     """
     return pathlib.Path(fpath).name
 
+# CLI STUFF
+# =========
+@click.group()
+def cli():
+    """
+    Run a multi-backup, copying multiple files to a list of directories.
+    """
+    pass
+
+@click.command()
+@click.argument("config_file_name")
+def template(config_file_name):
+    """
+    Generate a template JSON configuration file. This file will contain a list
+    of source files to be backed up to a list of destination directories.
+
+    The template file can be modified with actual information that can be acted
+    upon.
+
+    Args:
+        config_file_name: Name for the newly generated template JSON configuration file
+    """
+    template_config(config_file_name)
+
+cli.add_command(template)
+
 
 if __name__ == "__main__":
-    pass
+    cli()
 

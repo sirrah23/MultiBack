@@ -1,4 +1,6 @@
  - [X] Modify is_file to consume one file instead of a list
  - [X] Modify is_dir to consume one directory instead of a list
  - [ ] Re-organize tests to be class-based
- - [ ] Commandline interface creation
+ - [X] Commandline interface to create template file
+ - [ ] Commandline interface to run backup
+ - [ ] Split code into separate files
