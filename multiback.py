@@ -96,7 +96,29 @@ def read_config(cfg_file):
     except KeyError:
         valid = False
     return (valid, cfg_data)
+
+def validate_user_input(sources, destinations):
+    """
+    Make sure that the user input files and directories exist.
+
+    Args:
+        sources: Input source files
+        destinations: Input destination directories
     
+    Returns:
+        valid: Flag indicating if there were any issues
+        errors: List of error messages
+    """
+    valid = True
+    errors = []
+    for source in sources:
+        if not is_file([source])[1][0]:
+            errors.append("The source file `{}` does not exist".format(source))
+    for destination in destinations:
+        if not is_dir([destination])[1][0]:
+            errors.append("The destination directory `{}` does not exist".format(destination))
+    valid = len(errors) == 0
+    return (valid, errors)
 
 def backup_file(src, dests):
     """

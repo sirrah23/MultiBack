@@ -21,6 +21,8 @@ def setup_module():
     os.mkdir("./test/backups/dest_empty")
     os.mkdir("./test/backups/dest_populated")
     os.mkdir("./test/template")
+    os.mkdir("./test/validate")
+    os.mkdir("./test/validate/dest")
 
     create_file_with_content("./test/exist/exist1.txt", "Hello World1")
     create_file_with_content("./test/exist/exist2.txt", "Hello World2")
@@ -39,6 +41,8 @@ def setup_module():
     create_file_with_content("./test/backups/dest_populated/test.txt", "Hello World")
     create_file_with_content("./test/backups/dest_populated/test2.txt", "Hello World")
     create_file_with_content("./test/backups/dest_populated/test3.txt", "Hello World")
+
+    create_file_with_content("./test/validate/test.txt", "Hello World")
 
 def create_file_with_content(fname, content):
     with open(fname, "w+") as f:
@@ -150,3 +154,21 @@ def test_config_read():
     assert "/home/anon/test2.txt" in cfg["sources"]
     assert "/home/anon/backup/" in cfg["destinations"]
     assert "/home/anon/backup2/" in cfg["destinations"]
+
+def test_user_input_validation_errs():
+    root = os.path.abspath("./test/validate")
+    bad_file = os.path.join(root, "nosrc1.txt")
+    bad_dir = os.path.join(root, "nosrc2/")
+    valid, errors = validate_user_input([bad_file], [bad_dir])
+    assert valid == False
+    assert len(errors) == 2
+    assert "The source file `{}` does not exist".format(bad_file) in errors
+    assert "The destination directory `{}` does not exist".format(bad_dir) in errors
+
+def test_user_input_validation_no_errs():
+    root = os.path.abspath("./test/validate")
+    good_file = os.path.join(root, "test.txt")
+    good_dir = os.path.join(root, "dest/")
+    valid, errors = validate_user_input([good_file], [good_dir])
+    assert valid == True
+    assert len(errors) == 0
