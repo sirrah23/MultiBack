@@ -2,5 +2,7 @@
  - [X] Modify is_dir to consume one directory instead of a list
  - [ ] Re-organize tests to be class-based
  - [X] Commandline interface to create template file
- - [ ] Commandline interface to run backup
+ - [X] Commandline interface to run backup
  - [ ] Split code into separate files
+ - [ ] `template` function, click.argument -> click.option
+ - [ ] Separate business logic from cli interface completely
