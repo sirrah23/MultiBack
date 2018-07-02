@@ -29,29 +29,17 @@ def is_dir(dirs):
             any_missing = True
     return (any_missing, is_dir_res)
 
-def is_file(files):
+def is_file(file):
     """
-    Given a list of filenames, make sure that each input
-    is an existing file.
+    Given an input filename, make sure the file exists.
 
     Args:
-        dirs: A list of filenames
+        file: Filename
 
     Returns:
-        A tuple where the first item is a flag indicating if any input file
-        is missing and the second item is the list with a flag for each input
-        filename indicating whether or not the file exists.
-        True -> Exists
-        False -> Does not exist
+        Boolean, True -> Exists, False -> Does not exist
     """
-    is_file = []
-    any_missing = False
-    for file in files:
-        e = os.path.isfile(file)
-        is_file.append(e)
-        if not e:
-            any_missing = True
-    return (any_missing, is_file)
+    return os.path.isfile(file)
 
 def template_config(fname):
     """
@@ -112,7 +100,7 @@ def validate_user_input(sources, destinations):
     valid = True
     errors = []
     for source in sources:
-        if not is_file([source])[1][0]:
+        if not is_file(source):
             errors.append("The source file `{}` does not exist".format(source))
     for destination in destinations:
         if not is_dir([destination])[1][0]:
@@ -134,7 +122,7 @@ def backup_file(src, dests):
     src_fname = path_filename(src)
     for dest in dests:
         curr_file = os.path.join(dest, src_fname)
-        if is_file([curr_file])[1][0]:
+        if is_file(curr_file):
             rename_file(curr_file, os.path.join(dest, fname_timestamp(src_fname, ts)))
         copy_file(src, dest)
 

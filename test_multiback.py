@@ -52,10 +52,11 @@ def teardown_module():
     shutil.rmtree("./test")
 
 def test_is_file_not_exist():
-    assert is_file(["./notexist.txt"]) == (True, [False])
+    assert is_file("./notexist.txt") == False
 
 def test_is_file_exists():
-    assert is_file(["./test/exist/exist1.txt", "./test/exist/exist2.txt"]) == (False, [True, True])
+    assert is_file("./test/exist/exist1.txt") == True
+    assert is_file("./test/exist/exist2.txt") == True
 
 def test_is_dir_not_exists():
     assert is_dir(["./notexist"]) == (True, [False])
@@ -70,13 +71,13 @@ def test_filename_timestamp():
 
 def test_rename():
     rename_file("./test/rename/r1.txt", "./test/rename/r2.txt")
-    assert is_file(["./test/rename/r1.txt"])[1][0] == False
-    assert is_file(["./test/rename/r2.txt"])[1][0] == True
+    assert is_file("./test/rename/r1.txt") == False
+    assert is_file("./test/rename/r2.txt") == True
 
 def test_copy_file():
     copy_file("./test/copy/c1.txt", "./test/copy/c2.txt")
-    assert is_file(["./test/copy/c1.txt"])[1][0] == True
-    assert is_file(["./test/copy/c2.txt"])[1][0] == True
+    assert is_file("./test/copy/c1.txt") == True
+    assert is_file("./test/copy/c2.txt") == True
 
 def test_path_filename():
     fpath = "/home/john/test.txt"
@@ -86,8 +87,8 @@ def test_backup_file_no_rename():
     src = os.path.abspath("./test/backup/src/test.txt")
     dest = [os.path.abspath("./test/backup/dest_empty")]
     backup_file(src, dest)
-    assert is_file([src])[1][0] == True
-    assert is_file([os.path.join(dest[0], "test.txt")])[1][0] == True
+    assert is_file(src) == True
+    assert is_file(os.path.join(dest[0], "test.txt")) == True
 
 def test_backup_file_rename():
     src = os.path.abspath("./test/backup/src/test.txt")
