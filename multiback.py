@@ -5,29 +5,17 @@ import shutil
 import json
 
 
-def is_dir(dirs):
+def is_dir(dir):
     """
-    Given a list of directory names, make sure that each input
-    is an existing directory.
+    Given an input directory name, make sure the directory exists.
 
     Args:
-        dirs: A list of directory names
+        dir: Directory name
 
     Returns:
-        A tuple where the first item is a flag indicating if any input directory
-        is missing and the second item is the list with a flag for each input
-        directory name indicating whether or not the directory exists.
-        True -> Exists
-        False -> Does not exist
+        Boolean, True -> Exists, False -> Does not exist
     """
-    is_dir_res = []
-    any_missing = False
-    for dir in dirs:
-        e = os.path.isdir(dir)
-        is_dir_res.append(e)
-        if not e:
-            any_missing = True
-    return (any_missing, is_dir_res)
+    return os.path.isdir(dir)
 
 def is_file(file):
     """
@@ -103,7 +91,7 @@ def validate_user_input(sources, destinations):
         if not is_file(source):
             errors.append("The source file `{}` does not exist".format(source))
     for destination in destinations:
-        if not is_dir([destination])[1][0]:
+        if not is_dir(destination):
             errors.append("The destination directory `{}` does not exist".format(destination))
     valid = len(errors) == 0
     return (valid, errors)

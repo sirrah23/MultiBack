@@ -59,10 +59,10 @@ def test_is_file_exists():
     assert is_file("./test/exist/exist2.txt") == True
 
 def test_is_dir_not_exists():
-    assert is_dir(["./notexist"]) == (True, [False])
+    assert is_dir("./notexist") == False
 
 def test_is_dir_exists():
-    assert is_dir(["./test/exist"]) == (False, [True])
+    assert is_dir("./test/exist") == True
 
 def test_filename_timestamp():
     fname = "test.txt"
