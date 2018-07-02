@@ -1,0 +1,2 @@
+ - [ ] Modify is_file/is_dir to consume one file instead of a list
+ - [ ] Re-organize tests to be class-based
