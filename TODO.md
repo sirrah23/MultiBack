@@ -1,6 +1,7 @@
+ # TODO list
  - [X] Modify is_file to consume one file instead of a list
  - [X] Modify is_dir to consume one directory instead of a list
- - [ ] Re-organize tests to be class-based
+ - [X] Re-organize tests to be class-based
  - [X] Commandline interface to create template file
  - [X] Commandline interface to run backup
  - [ ] Split code into separate files
