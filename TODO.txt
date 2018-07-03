@@ -6,3 +6,5 @@
  - [ ] Split code into separate files
  - [ ] `template` function, click.argument -> click.option
  - [ ] Separate business logic from cli interface completely
+ - [ ] Remove content argument to create_file_with_content
+ - [ ] Manage files/directories in tests with a separate class

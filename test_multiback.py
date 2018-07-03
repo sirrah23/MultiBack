@@ -3,46 +3,8 @@ import shutil
 from multiback import *
 
 
-# TODO: Re-organize this into a class-based test-suite for better
-# maintainability...
-
-
 def setup_module():
     os.mkdir("./test")
-    os.mkdir("./test/exist")
-    os.mkdir("./test/rename")
-    os.mkdir("./test/copy")
-    os.mkdir("./test/backup")
-    os.mkdir("./test/backup/src")
-    os.mkdir("./test/backup/dest_empty")
-    os.mkdir("./test/backup/dest_populated")
-    os.mkdir("./test/backups")
-    os.mkdir("./test/backups/src")
-    os.mkdir("./test/backups/dest_empty")
-    os.mkdir("./test/backups/dest_populated")
-    os.mkdir("./test/template")
-    os.mkdir("./test/validate")
-    os.mkdir("./test/validate/dest")
-
-    create_file_with_content("./test/exist/exist1.txt", "Hello World1")
-    create_file_with_content("./test/exist/exist2.txt", "Hello World2")
-
-    create_file_with_content("./test/rename/r1.txt", "Hello World")
-
-    create_file_with_content("./test/copy/c1.txt", "Hello World")
-    create_file_with_content("./test/copy/c1.txt", "Hello World")
-
-    create_file_with_content("./test/backup/src/test.txt", "Hello World")
-    create_file_with_content("./test/backup/dest_populated/test.txt", "Hello World")
-
-    create_file_with_content("./test/backups/src/test.txt", "Hello World")
-    create_file_with_content("./test/backups/src/test2.txt", "Hello World")
-    create_file_with_content("./test/backups/src/test3.txt", "Hello World")
-    create_file_with_content("./test/backups/dest_populated/test.txt", "Hello World")
-    create_file_with_content("./test/backups/dest_populated/test2.txt", "Hello World")
-    create_file_with_content("./test/backups/dest_populated/test3.txt", "Hello World")
-
-    create_file_with_content("./test/validate/test.txt", "Hello World")
 
 def create_file_with_content(fname, content):
         with open(fname, "w+") as f:
@@ -53,6 +15,16 @@ def teardown_module():
 
 
 class TestFileDirExist:
+
+    @classmethod
+    def setup_class(cls):
+        os.mkdir("./test/exist")
+        create_file_with_content("./test/exist/exist1.txt", "Hello World1")
+        create_file_with_content("./test/exist/exist2.txt", "Hello World2")
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree("./test/exist")
 
     def test_is_file_not_exist(self):
         assert is_file("./notexist.txt") == False
@@ -78,6 +50,19 @@ class TestTimestamp:
 
 class TestFileManipulation:
 
+    @classmethod
+    def setup_class(cls):
+        os.mkdir("./test/rename")
+        os.mkdir("./test/copy")
+        create_file_with_content("./test/rename/r1.txt", "Hello World")
+        create_file_with_content("./test/copy/c1.txt", "Hello World")
+        create_file_with_content("./test/copy/c1.txt", "Hello World")
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree("./test/rename")
+        shutil.rmtree("./test/copy")
+
     def test_rename(self):
         rename_file("./test/rename/r1.txt", "./test/rename/r2.txt")
         assert is_file("./test/rename/r1.txt") == False
@@ -94,6 +79,30 @@ class TestFileManipulation:
 
 
 class TestBackup:
+
+    @classmethod
+    def setup_class(cls):
+        os.mkdir("./test/backup")
+        os.mkdir("./test/backup/src")
+        os.mkdir("./test/backup/dest_empty")
+        os.mkdir("./test/backup/dest_populated")
+        os.mkdir("./test/backups")
+        os.mkdir("./test/backups/src")
+        os.mkdir("./test/backups/dest_empty")
+        os.mkdir("./test/backups/dest_populated")
+        create_file_with_content("./test/backup/src/test.txt", "Hello World")
+        create_file_with_content("./test/backup/dest_populated/test.txt", "Hello World")
+        create_file_with_content("./test/backups/src/test.txt", "Hello World")
+        create_file_with_content("./test/backups/src/test2.txt", "Hello World")
+        create_file_with_content("./test/backups/src/test3.txt", "Hello World")
+        create_file_with_content("./test/backups/dest_populated/test.txt", "Hello World")
+        create_file_with_content("./test/backups/dest_populated/test2.txt", "Hello World")
+        create_file_with_content("./test/backups/dest_populated/test3.txt", "Hello World")
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree("./test/backup")
+        shutil.rmtree("./test/backups")
 
     def test_backup_file_no_rename(self):
         src = os.path.abspath("./test/backup/src/test.txt")
@@ -151,6 +160,14 @@ class TestBackup:
 
 class TestConfig:
 
+    @classmethod
+    def setup_class(cls):
+        os.mkdir("./test/template")
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree("./test/template")
+
     def test_template_config(self):
         loc = os.path.abspath("./test/template/")
         loc = os.path.join(loc, fname_timestamp("config.json", timestamp_str()))
@@ -174,6 +191,16 @@ class TestConfig:
 
 class TestUserInputValidation:
 
+    @classmethod
+    def setup_class(cls):
+        os.mkdir("./test/validate")
+        os.mkdir("./test/validate/dest")
+        create_file_with_content("./test/validate/test.txt", "Hello World")
+
+    @classmethod
+    def teardown_class(cls):
+        shutil.rmtree("./test/validate")
+
     def test_user_input_validation_errs(self):
         root = os.path.abspath("./test/validate")
         bad_file = os.path.join(root, "nosrc1.txt")
@@ -191,3 +218,4 @@ class TestUserInputValidation:
         valid, errors = validate_user_input([good_file], [good_dir])
         assert valid == True
         assert len(errors) == 0
+
