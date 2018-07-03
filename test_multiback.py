@@ -52,7 +52,7 @@ def teardown_module():
     shutil.rmtree("./test")
 
 
-class TestEverything:
+class TestFileDirExist:
 
     def test_is_file_not_exist(self):
         assert is_file("./notexist.txt") == False
@@ -67,10 +67,16 @@ class TestEverything:
     def test_is_dir_exists(self):
         assert is_dir("./test/exist") == True
 
+
+class TestTimestamp:
+
     def test_filename_timestamp(self):
         fname = "test.txt"
         tstamp = "20180629.111516"
         assert fname_timestamp(fname, tstamp) == "test.20180629.111516.txt"
+
+
+class TestFileManipulation:
 
     def test_rename(self):
         rename_file("./test/rename/r1.txt", "./test/rename/r2.txt")
@@ -85,6 +91,9 @@ class TestEverything:
     def test_path_filename(self):
         fpath = "/home/john/test.txt"
         assert path_filename(fpath) == "test.txt"
+
+
+class TestBackup:
 
     def test_backup_file_no_rename(self):
         src = os.path.abspath("./test/backup/src/test.txt")
@@ -139,6 +148,9 @@ class TestEverything:
                 counts[0] += 1
         assert counts == [2, 2, 2]
 
+
+class TestConfig:
+
     def test_template_config(self):
         loc = os.path.abspath("./test/template/")
         loc = os.path.join(loc, fname_timestamp("config.json", timestamp_str()))
@@ -158,6 +170,9 @@ class TestEverything:
         assert "/home/anon/test2.txt" in cfg["sources"]
         assert "/home/anon/backup/" in cfg["destinations"]
         assert "/home/anon/backup2/" in cfg["destinations"]
+
+
+class TestUserInputValidation:
 
     def test_user_input_validation_errs(self):
         root = os.path.abspath("./test/validate")
