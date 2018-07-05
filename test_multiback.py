@@ -1,6 +1,6 @@
 import os
 import shutil
-from multiback import *
+from core import *
 
 
 def setup_module():
