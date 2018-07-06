@@ -16,8 +16,8 @@ def cli():
     pass
 
 @click.command()
-@click.argument("config_file_name")
-def template(config_file_name):
+@click.option("--config", default="./config.json", help="JSON configuration file")
+def template(config):
     """
     Generate a template JSON configuration file. This file will contain a list
     of source files to be backed up to a list of destination directories.
@@ -28,7 +28,7 @@ def template(config_file_name):
     Args:
         config_file_name: Name for the newly generated template JSON configuration file
     """
-    template_config(config_file_name)
+    template_config(config)
     sys.exit(0)
 
 @click.command()

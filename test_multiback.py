@@ -6,7 +6,7 @@ from core import *
 def setup_module():
     os.mkdir("./test")
 
-def create_file_with_content(fname, content):
+def create_file_with_content(fname, content=""):
         with open(fname, "w+") as f:
             f.write(content)
 
@@ -19,8 +19,8 @@ class TestFileDirExist:
     @classmethod
     def setup_class(cls):
         os.mkdir("./test/exist")
-        create_file_with_content("./test/exist/exist1.txt", "Hello World1")
-        create_file_with_content("./test/exist/exist2.txt", "Hello World2")
+        create_file_with_content("./test/exist/exist1.txt")
+        create_file_with_content("./test/exist/exist2.txt")
 
     @classmethod
     def teardown_class(cls):
@@ -54,9 +54,9 @@ class TestFileManipulation:
     def setup_class(cls):
         os.mkdir("./test/rename")
         os.mkdir("./test/copy")
-        create_file_with_content("./test/rename/r1.txt", "Hello World")
-        create_file_with_content("./test/copy/c1.txt", "Hello World")
-        create_file_with_content("./test/copy/c1.txt", "Hello World")
+        create_file_with_content("./test/rename/r1.txt")
+        create_file_with_content("./test/copy/c1.txt")
+        create_file_with_content("./test/copy/c1.txt")
 
     @classmethod
     def teardown_class(cls):
@@ -90,14 +90,14 @@ class TestBackup:
         os.mkdir("./test/backups/src")
         os.mkdir("./test/backups/dest_empty")
         os.mkdir("./test/backups/dest_populated")
-        create_file_with_content("./test/backup/src/test.txt", "Hello World")
-        create_file_with_content("./test/backup/dest_populated/test.txt", "Hello World")
-        create_file_with_content("./test/backups/src/test.txt", "Hello World")
-        create_file_with_content("./test/backups/src/test2.txt", "Hello World")
-        create_file_with_content("./test/backups/src/test3.txt", "Hello World")
-        create_file_with_content("./test/backups/dest_populated/test.txt", "Hello World")
-        create_file_with_content("./test/backups/dest_populated/test2.txt", "Hello World")
-        create_file_with_content("./test/backups/dest_populated/test3.txt", "Hello World")
+        create_file_with_content("./test/backup/src/test.txt")
+        create_file_with_content("./test/backup/dest_populated/test.txt")
+        create_file_with_content("./test/backups/src/test.txt")
+        create_file_with_content("./test/backups/src/test2.txt")
+        create_file_with_content("./test/backups/src/test3.txt")
+        create_file_with_content("./test/backups/dest_populated/test.txt")
+        create_file_with_content("./test/backups/dest_populated/test2.txt")
+        create_file_with_content("./test/backups/dest_populated/test3.txt")
 
     @classmethod
     def teardown_class(cls):
@@ -195,7 +195,7 @@ class TestUserInputValidation:
     def setup_class(cls):
         os.mkdir("./test/validate")
         os.mkdir("./test/validate/dest")
-        create_file_with_content("./test/validate/test.txt", "Hello World")
+        create_file_with_content("./test/validate/test.txt")
 
     @classmethod
     def teardown_class(cls):

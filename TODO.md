@@ -5,8 +5,8 @@
  - [X] Commandline interface to create template file
  - [X] Commandline interface to run backup
  - [X] Split code into separate files
- - [ ] `template` function, click.argument -> click.option
- - [ ] Separate business logic from cli interface completely
- - [ ] Remove content argument to create_file_with_content
+ - [X] `template` function, click.argument -> click.option
+ - [X] Separate business logic from cli interface completely
+ - [X] Remove content argument to create_file_with_content
+ - [X] Update README file
  - [ ] Manage files/directories in tests with a separate class
- - [ ] Update README file
